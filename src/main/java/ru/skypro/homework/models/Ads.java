@@ -1,16 +1,14 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-// vse commenty ot odnogo cheloveka
-public class CommentsDto {
+public class Ads {
     private Integer count;
-    private List<CommentDto> results;
+    private List<Ads> results;
 }
