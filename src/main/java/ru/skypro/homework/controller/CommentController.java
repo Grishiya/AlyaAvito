@@ -11,13 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ads/{adId}/comments")
+@CrossOrigin("http://localhost:3000")
 public class CommentController {
 
     @GetMapping
     public CommentsDto getComments(@PathVariable Integer adId) {
-        return new CommentsDto(1,new CommentDto(
-                1, "test", "test",
-                Instant.now().toEpochMilli(),1, "text");
+        return new CommentsDto(1,List.of(new CommentDto(
+                1, null, "test",
+                Instant.now().toEpochMilli(),1, "textComment")));
     }
 
     @PostMapping
@@ -25,7 +26,7 @@ public class CommentController {
             @PathVariable Integer adId,
             @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
         return new CommentsDto(1, List.of(new CommentDto(
-                1, "test", "test",
+                1, null, "test",
                 Instant.now().toEpochMilli(), 1, createOrUpdateCommentDto.getText())));
     }
 
@@ -45,5 +46,4 @@ public class CommentController {
                 1, "test", "test",
                 Instant.now().toEpochMilli(), 1, createOrUpdateCommentDto.getText());
     }
-
 }

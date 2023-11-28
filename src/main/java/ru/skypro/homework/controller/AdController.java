@@ -15,12 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ads")
+@CrossOrigin("http://localhost:3000")
 public class AdController {
-    private final AdDto adDto = new AdDto(1, "test", 1, 1, "test");
-    private final AdsDto adsDto = new AdsDto(1, List.of(adDto));
+    private  AdDto adDto = new AdDto(1, null, 1, 100, "test");
+    private  AdsDto adsDto = new AdsDto(1, List.of(adDto));
     private final ExtendedAdDto extendedAdDto = new ExtendedAdDto(
             1, "test", "test", "test",
-            "test", "test", "+2222", 1, "test");
+            "test", null, "+2222", 1, "test");
 
     @GetMapping
     public AdsDto getAllAds() {
@@ -29,12 +30,16 @@ public class AdController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AdDto createAd(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto, @RequestParam MultipartFile image) {
-        return adDto;
+        return new AdDto(1, null, 1,
+                createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
     }
 
     @GetMapping("/{id}")
     public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
-            return extendedAdDto;
+            return new ExtendedAdDto(
+                    1, "test", "test",
+                    "test Description","test@example.com",
+                    null, "+79000000000", 100, "test");
         }
 
 
@@ -45,12 +50,13 @@ public class AdController {
 
     @PatchMapping("/{id}")
     public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
-        return adDto;
+        return new AdDto(1, null, 1,
+                createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
     }
 
     @GetMapping("/me")
     public AdsDto getAdsMe() {
-        return adsDto;
+        return new AdsDto(1,List.of(new AdDto(1, null, 1, 100, "test")));
     }
 
     @PatchMapping(value = "/{adId}/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

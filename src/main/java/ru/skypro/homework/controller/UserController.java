@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/me")
     public UserDto getUser() {
-        return new UserDto(1,"@test","aaa","aaa","+777", RoleDto.USER,"null");
+        return new UserDto(1,"sds@test","aaa","aaa","+777", RoleDto.USER,"null");
     }
 
     @PatchMapping("/me")
