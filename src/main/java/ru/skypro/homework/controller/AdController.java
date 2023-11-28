@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,43 +15,52 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ads")
+@CrossOrigin("http://localhost:3000")
 public class AdController {
-    private AdDto adsDto = new AdDto(1, "test", 1, 1, "test");
-    private List<AdDto> adDtoList = new ArrayList<>(Collections.singleton(adsDto));
-
+    private  AdDto adDto = new AdDto(1, null, 1, 100, "test");
+    private  AdsDto adsDto = new AdsDto(1, List.of(adDto));
+    private final ExtendedAdDto extendedAdDto = new ExtendedAdDto(
+            1, "test", "test", "test",
+            "test", null, "+2222", 1, "test");
 
     @GetMapping
     public AdsDto getAllAds() {
-        return new AdsDto(1,adDtoList);
+        return adsDto;
     }
 
-    @PostMapping
-    public AdDto addAd(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
-        return ;
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AdDto createAd(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto, @RequestParam MultipartFile image) {
+        return new AdDto(1, null, 1,
+                createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> getAds(@PathVariable Integer id) {
-        return ResponseEntity.ok(new ExtendedAdDto());
-    }
+    public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
+            return new ExtendedAdDto(
+                    1, "test", "test",
+                    "test Description","test@example.com",
+                    null, "+79000000000", 100, "test");
+        }
+
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeAd(@PathVariable Integer id) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> removeAd(@PathVariable Integer id) {
+        return ResponseEntity.ok("OK");
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AdDto> updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
-        return ResponseEntity.ok(new AdDto());
+    public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
+        return new AdDto(1, null, 1,
+                createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AdsDto> getAdsMe() {
-        return ResponseEntity.ok(new AdsDto());
+    public AdsDto getAdsMe() {
+        return new AdsDto(1,List.of(new AdDto(1, null, 1, 100, "test")));
     }
 
-    @PatchMapping("/{adId}/image")
-    public ResponseEntity<Void> updateImage(@PathVariable Integer adId, @RequestParam("image") MultipartFile image) {
+    @PatchMapping(value = "/{adId}/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> updateImage(@PathVariable Integer adId, @RequestParam("image") MultipartFile image) {
         return ResponseEntity.ok().build();
     }
 }

@@ -6,34 +6,44 @@ import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 
+import java.time.Instant;
+import java.util.List;
+
 @RestController
 @RequestMapping("/ads/{adId}/comments")
+@CrossOrigin("http://localhost:3000")
 public class CommentController {
 
     @GetMapping
-    public ResponseEntity<CommentsDto> getComments(@PathVariable Integer adId) {
-        return ResponseEntity.ok(new CommentsDto());
+    public CommentsDto getComments(@PathVariable Integer adId) {
+        return new CommentsDto(1,List.of(new CommentDto(
+                1, null, "test",
+                Instant.now().toEpochMilli(),1, "textComment")));
     }
 
     @PostMapping
-    public ResponseEntity<CommentDto> addComment(
+    public CommentsDto createComment(
             @PathVariable Integer adId,
             @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
-        return ResponseEntity.ok(new CommentDto()   );
+        return new CommentsDto(1, List.of(new CommentDto(
+                1, null, "test",
+                Instant.now().toEpochMilli(), 1, createOrUpdateCommentDto.getText())));
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> deleteComment(
+    public ResponseEntity<String> deleteComment(
             @PathVariable Integer adId,
             @PathVariable Integer commentId) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("OK");
     }
 
     @PatchMapping("/{commentId}")
-    public ResponseEntity<CommentDto> updateComment(
+    public CommentDto updateComment(
             @PathVariable Integer adId,
             @PathVariable Integer commentId,
             @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
-        return ResponseEntity.ok(new CommentDto());
+        return new CommentDto(
+                1, "test", "test",
+                Instant.now().toEpochMilli(), 1, createOrUpdateCommentDto.getText());
     }
 }
