@@ -2,7 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.exception.UserAlreadyAddedException;
-import ru.skypro.homework.models.User;
+import ru.skypro.homework.models.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -19,19 +19,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
+    public UserEntity create(UserEntity userEntity) {
         if(userRepository.findByFirstNameAndLastName(
-                user.getFirstName(),
-                user.getLastName()).isPresent()){
+                userEntity.getFirstName(),
+                userEntity.getLastName()).isPresent()){
             throw new UserAlreadyAddedException(
-                    "User with that initial is already added!");
+                    "UserEntity with that initial is already added!");
         }
-        return userRepository.save(user);
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public User read(Integer id) {
-        Optional<User> user = userRepository.findById(id);
+    public UserEntity read(Integer id) {
+        Optional<UserEntity> user = userRepository.findById(id);
         if(user.isEmpty()){
             throw new NoSuchElementException("This user not found!");
         }
@@ -39,24 +39,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user) {
-        Optional<User> check = userRepository.findById(user.getId());
+    public UserEntity update(UserEntity userEntity) {
+        Optional<UserEntity> check = userRepository.findById(userEntity.getId());
         if(check.isEmpty()){
-            throw new NoSuchElementException("This user not found!");
+            throw new NoSuchElementException("This userEntity not found!");
         }
 
-        return userRepository.save(user);
+        return userRepository.save(userEntity);
     }
 
     @Override
-    public User delete(Integer id) {
-        Optional<User> user = userRepository.findById(id);
+    public UserEntity delete(Integer id) {
+        Optional<UserEntity> user = userRepository.findById(id);
         if(user.isEmpty()){
             throw new NoSuchElementException("This user not found!");
         }
         userRepository.deleteById(id);
 
-        User deleteUser = user.get();
-        return deleteUser;
+        UserEntity deleteUserEntity = user.get();
+        return deleteUserEntity;
     }
 }

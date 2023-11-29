@@ -15,12 +15,11 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentRepository commentRepository;
 
-    private Ad ad;
 
-    public CommentServiceImpl(CommentRepository commentRepository, Ad ad) {
+    public CommentServiceImpl(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.ad=ad;
     }
+
 
     public Comment create(Comment comment) {
         return commentRepository.save(comment);
@@ -35,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     public Comment update(Comment comment) {
-        Optional<Comment> check = commentRepository.findById(comment.getAuthorId());
+        Optional<Comment> check = commentRepository.findById(comment.getAuthor().getId());
         if (check.isEmpty()) {
             throw new NoSuchElementException("This comment not found");
         }
