@@ -17,14 +17,17 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pkId;
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id",nullable = false)
     private UserEntity author;
     private String authorImage;
+    @Column(nullable = false)
     private String authorFirstName;
+    @Column(nullable = false)
     private Long createdAt;
+    @Column(nullable = false)
     private String text;
     @ManyToOne
-    @JoinColumn(name = "ad_id")
+    @JoinColumn(name = "ad_id",nullable = false)
     private Ad ad;
 
     @Override

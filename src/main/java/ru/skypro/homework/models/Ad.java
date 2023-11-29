@@ -17,11 +17,14 @@ public class Ad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pkId;
    @ManyToOne
-   @JoinColumn(name = "author_id")
+   @JoinColumn(name = "author_id",nullable = false)
     private UserEntity author;
     private String image;
+    @Column(nullable = false)
 private Integer price;
+    @Column(nullable = false)
 private String title;
+    @Column(nullable = false)
 private String description;
 
     @Override
