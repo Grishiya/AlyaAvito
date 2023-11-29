@@ -4,10 +4,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.skypro.homework.dto.RoleDto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -20,10 +17,15 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false,length = 55)
     private String email;
+    @Column(nullable = false, length = 32)
     private String firstName;
+    @Column(nullable = false, length = 32)
     private String lastName;
+    @Column(nullable = false,length = 12)
     private String phone;
+    @Column(nullable = false)
     private RoleDto role;
     private String image;
 
