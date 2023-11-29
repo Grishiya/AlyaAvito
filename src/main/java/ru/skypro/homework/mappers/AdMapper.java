@@ -3,10 +3,11 @@ package ru.skypro.homework.mappers;
 import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.models.Ad;
+import ru.skypro.homework.models.UserEntity;
 
 public class AdMapper {
 
-    public static Ad toAd(AdDto adDto) {
+    public static Ad toAd(AdDto adDto, UserEntity author) {
         if (adDto == null) {
             throw new NullPointerException("Tried to map null to Ad");
         }
@@ -14,9 +15,9 @@ public class AdMapper {
 
         Ad ad = new Ad();
 
-        ad.setAuthorId(adDto.getAuthorId());
-        ad.setImage(adDto.getImage());
         ad.setPkId(adDto.getPkId());
+        ad.setAuthor(author);
+        ad.setImage(adDto.getImage());
         ad.setPrice(adDto.getPrice());
         ad.setTitle(adDto.getTitle());
 
@@ -31,9 +32,9 @@ public class AdMapper {
 
         AdDto adDto = new AdDto();
 
-        adDto.setAuthorId(ad.getAuthorId());
-        adDto.setImage(ad.getImage());
         adDto.setPkId(ad.getPkId());
+        adDto.setAuthorId(ad.getAuthor().getId());
+        adDto.setImage(ad.getImage());
         adDto.setPrice(ad.getPrice());
         adDto.setTitle(ad.getTitle());
 

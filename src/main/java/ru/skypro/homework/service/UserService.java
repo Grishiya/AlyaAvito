@@ -1,11 +1,11 @@
 package ru.skypro.homework.service;
 
-import ru.skypro.homework.models.User;
+import ru.skypro.homework.models.UserEntity;
 
 public interface UserService {
 
-    User create(User user);
-    User read(Integer id);
-    User update(User user);
-    User delete(Integer id);
+    UserEntity create(UserEntity userEntity);
+    UserEntity read(Integer id);
+    UserEntity update(UserEntity userEntity);
+    UserEntity delete(Integer id);
 }

@@ -17,15 +17,11 @@ import java.util.List;
 @RequestMapping("/ads")
 @CrossOrigin("http://localhost:3000")
 public class AdController {
-    private  AdDto adDto = new AdDto(1, null, 1, 100, "test");
-    private  AdsDto adsDto = new AdsDto(1, List.of(adDto));
-    private final ExtendedAdDto extendedAdDto = new ExtendedAdDto(
-            1, "test", "test", "test",
-            "test", null, "+2222", 1, "test");
+
 
     @GetMapping
     public AdsDto getAllAds() {
-        return adsDto;
+        return new AdsDto(1,List.of(new AdDto(1,null,1,100,"test")));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
