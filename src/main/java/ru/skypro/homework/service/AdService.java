@@ -1,5 +1,6 @@
 package ru.skypro.homework.service;
 
-public interface AdsService {
+public interface AdService {
+
 
 }
