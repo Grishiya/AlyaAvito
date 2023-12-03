@@ -29,7 +29,7 @@ public class AdServiceImpl implements AdService {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow();
         Ad ad = new Ad();
         ad.setAuthor(userEntity);
-                ad.setTitle(createOrUpdateAdDto.getTitle());
+        ad.setTitle(createOrUpdateAdDto.getTitle());
         ad.setPrice(createOrUpdateAdDto.getPrice());
         ad.setDescription(createOrUpdateAdDto.getDescription());
         return adRepository.save(ad);
