@@ -13,7 +13,7 @@ public class AdDto {
 
     private Integer authorId;
     private String image;
-    private Integer pkId;
+    private Integer Id;
     private Integer price;
     private String title;
 

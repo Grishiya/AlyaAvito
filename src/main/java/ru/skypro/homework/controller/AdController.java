@@ -8,9 +8,9 @@ import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
+import ru.skypro.homework.mappers.AdMapper;
+import ru.skypro.homework.service.AdService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -18,25 +18,24 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 public class AdController {
 
+    private final AdService adService;
+
+    public AdController(AdService adService) {
+        this.adService = adService;
+    }
 
     @GetMapping
     public AdsDto getAllAds() {
-        return new AdsDto(1,List.of(new AdDto(1,null,1,100,"test")));
+        return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
+                new AdDto(1,null,2,150,"Test2")));
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AdDto createAd(@RequestBody CreateOrUpdateAdDto createOrUpdateAdDto, @RequestParam MultipartFile image) {
-        return new AdDto(1, null, 1,
-                createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
-    }
 
     @GetMapping("/{id}")
-    public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
-            return new ExtendedAdDto(
-                    1, "test", "test",
-                    "test Description","test@example.com",
-                    null, "+79000000000", 100, "test");
+        public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
+            return AdMapper.fromExtendedAd(adService.read(id));
         }
+
 
 
     @DeleteMapping("/{id}")
@@ -52,7 +51,8 @@ public class AdController {
 
     @GetMapping("/me")
     public AdsDto getAdsMe() {
-        return new AdsDto(1,List.of(new AdDto(1, null, 1, 100, "test")));
+        return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
+                new AdDto(1,null,2,150,"Test2")));
     }
 
     @PatchMapping(value = "/{adId}/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
