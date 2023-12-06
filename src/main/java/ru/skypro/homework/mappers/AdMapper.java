@@ -33,7 +33,7 @@ public class AdMapper {
         AdDto adDto = new AdDto();
 
         adDto.setId(ad.getId());
-        adDto.setAuthorId(ad.getAuthor().getId());
+        adDto.setAuthor(ad.getAuthor().getId());
         adDto.setImage(ad.getImage());
         adDto.setPrice(ad.getPrice());
         adDto.setTitle(ad.getTitle());

@@ -39,7 +39,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public Ad read(Integer id) {
         Optional<Ad> ad = adRepository.findById(id);
-        if (ad.isEmpty()) {
+        if (!ad.isEmpty()) {
             throw new NoSuchElementException("Такого объявления нет");
         }
         return ad.get();

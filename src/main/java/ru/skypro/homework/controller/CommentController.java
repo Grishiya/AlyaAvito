@@ -15,7 +15,7 @@ import java.util.List;
 public class CommentController {
 
     @GetMapping
-    public CommentsDto getComments(@PathVariable("adId") Integer adId) {
+    public CommentsDto getComments(@PathVariable("adId") int adId) {
         return new CommentsDto(1,List.of(new CommentDto(
                 1, null, "test",
                 Instant.now().toEpochMilli(),1, "textComment")));
@@ -23,7 +23,7 @@ public class CommentController {
 
     @PostMapping
     public CommentDto createComment(
-            @PathVariable Integer adId,
+            @PathVariable("adId") int adId,
             @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
         return new CommentDto(
                 1, null, "test",

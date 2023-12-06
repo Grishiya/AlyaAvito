@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 // Объявление
 public class AdDto {
 
-    private Integer authorId;
+    private Integer author;
     private String image;
     @JsonProperty("pk")
     private Integer Id;

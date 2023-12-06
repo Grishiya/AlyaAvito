@@ -4,10 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.AdDto;
-import ru.skypro.homework.dto.AdsDto;
-import ru.skypro.homework.dto.CreateOrUpdateAdDto;
-import ru.skypro.homework.dto.ExtendedAdDto;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.mappers.AdMapper;
 import ru.skypro.homework.service.AdService;
 
@@ -31,15 +28,25 @@ public class AdController {
     }
 
 
+    @GetMapping("/me")
+    public AdsDto getAdsMe() {
+        return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
+                new AdDto(1,null,2,150,"Test2")));
+    }
+
     @GetMapping("/{id}")
         public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
             return AdMapper.fromExtendedAd(adService.read(id));
         }
 
-
-
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AdDto create(@RequestPart CreateOrUpdateAdDto adDto, @RequestBody MultipartFile multipartFile) {
+        var user = new UserDto(1, "testexample@Mail.ru", "test", "test", "+79000000000", RoleDto.USER, null);
+        return AdMapper.fromAd(adService.create(adDto,user.getId()));
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeAd(@PathVariable Integer id) {
+
         return ResponseEntity.ok("OK");
     }
 
@@ -47,12 +54,6 @@ public class AdController {
     public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
         return new AdDto(1, null, 1,
                 createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
-    }
-
-    @GetMapping("/me")
-    public AdsDto getAdsMe() {
-        return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
-                new AdDto(1,null,2,150,"Test2")));
     }
 
     @PatchMapping(value = "/{adId}/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
