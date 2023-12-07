@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pkId;
+    private Integer Id;
    @ManyToOne
    @JoinColumn(name = "author_id",nullable = false)
     private UserEntity author;
@@ -35,7 +35,7 @@ private String description;
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         Ad ad = (Ad) o;
-        return getPkId() != null && Objects.equals(getPkId(), ad.getPkId());
+        return getId() != null && Objects.equals(getId(), ad.getId());
     }
 
     @Override

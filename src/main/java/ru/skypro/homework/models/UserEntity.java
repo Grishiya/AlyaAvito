@@ -5,6 +5,7 @@ import org.hibernate.proxy.HibernateProxy;
 import ru.skypro.homework.dto.RoleDto;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -28,6 +29,11 @@ public class UserEntity {
     @Column(nullable = false)
     private RoleDto role;
     private String image;
+    @OneToMany(mappedBy = "author")
+    private List<Ad> ads;
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
 
     @Override
     public final boolean equals(Object o) {

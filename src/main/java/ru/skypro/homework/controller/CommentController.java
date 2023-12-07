@@ -15,19 +15,19 @@ import java.util.List;
 public class CommentController {
 
     @GetMapping
-    public CommentsDto getComments(@PathVariable Integer adId) {
+    public CommentsDto getComments(@PathVariable("adId") int adId) {
         return new CommentsDto(1,List.of(new CommentDto(
                 1, null, "test",
                 Instant.now().toEpochMilli(),1, "textComment")));
     }
 
     @PostMapping
-    public CommentsDto createComment(
-            @PathVariable Integer adId,
+    public CommentDto createComment(
+            @PathVariable("adId") int adId,
             @RequestBody CreateOrUpdateCommentDto createOrUpdateCommentDto) {
-        return new CommentsDto(1, List.of(new CommentDto(
+        return new CommentDto(
                 1, null, "test",
-                Instant.now().toEpochMilli(), 1, createOrUpdateCommentDto.getText())));
+                Instant.now().toEpochMilli(), 1, createOrUpdateCommentDto.getText());
     }
 
     @DeleteMapping("/{commentId}")

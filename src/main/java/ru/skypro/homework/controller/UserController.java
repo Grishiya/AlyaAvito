@@ -20,7 +20,8 @@ public class UserController {
 
     @GetMapping("/me")
     public UserDto getUser() {
-        return new UserDto(1,"sds@test","aaa","aaa","+777", RoleDto.USER,"null");
+        return new UserDto(1,"test@example.com",
+                "Test","Test","+79000000000", RoleDto.USER,null);
     }
 
     @PatchMapping("/me")
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PatchMapping("/me/image")
-    public ResponseEntity<String> updateUserImage(@RequestParam("image") MultipartFile image) {
+    public ResponseEntity<String> updateUserImage(@RequestPart("image") MultipartFile image) {
         return ResponseEntity.ok("Ok");
     }
 }

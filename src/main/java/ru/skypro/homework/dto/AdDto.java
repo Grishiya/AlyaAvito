@@ -1,5 +1,6 @@
 package ru.skypro.homework.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,9 @@ import lombok.NoArgsConstructor;
 // Объявление
 public class AdDto {
 
-    private Integer authorId;
+    private Integer author;
     private String image;
-    private Integer pkId;
+    private Integer pk;
     private Integer price;
     private String title;
 

@@ -1,7 +1,7 @@
 package ru.skypro.homework.mappers;
 
 import ru.skypro.homework.dto.AdDto;
-import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.UserEntity;
 
@@ -15,7 +15,7 @@ public class AdMapper {
 
         Ad ad = new Ad();
 
-        ad.setPkId(adDto.getPkId());
+        ad.setId(adDto.getPk());
         ad.setAuthor(author);
         ad.setImage(adDto.getImage());
         ad.setPrice(adDto.getPrice());
@@ -32,8 +32,8 @@ public class AdMapper {
 
         AdDto adDto = new AdDto();
 
-        adDto.setPkId(ad.getPkId());
-        adDto.setAuthorId(ad.getAuthor().getId());
+        adDto.setPk(ad.getId());
+        adDto.setAuthor(ad.getAuthor().getId());
         adDto.setImage(ad.getImage());
         adDto.setPrice(ad.getPrice());
         adDto.setTitle(ad.getTitle());
@@ -41,5 +41,24 @@ public class AdMapper {
         return adDto;
     }
 
+    public static ExtendedAdDto fromExtendedAd(Ad ad) {
+        if (ad == null) {
+            throw new NullPointerException("Tried to map null to AdDto");
+        }
+
+        ExtendedAdDto extendedAdDto = new ExtendedAdDto();
+
+        extendedAdDto.setPk(ad.getId());
+        extendedAdDto.setAuthorFirstName(ad.getAuthor().getFirstName());
+        extendedAdDto.setAuthorLastName(ad.getAuthor().getLastName());
+        extendedAdDto.setDescription(ad.getDescription());
+        extendedAdDto.setEmail(ad.getAuthor().getEmail());
+        extendedAdDto.setImage(ad.getImage());
+        extendedAdDto.setPhone(ad.getAuthor().getPhone());
+        extendedAdDto.setPrice(ad.getPrice());
+        extendedAdDto.setTitle(ad.getTitle());
+
+        return extendedAdDto;
+    }
 
 }
