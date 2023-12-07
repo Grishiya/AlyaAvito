@@ -14,8 +14,7 @@ public class AdDto {
 
     private Integer author;
     private String image;
-    @JsonProperty("pk")
-    private Integer Id;
+    private Integer pk;
     private Integer price;
     private String title;
 
