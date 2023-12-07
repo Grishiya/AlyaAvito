@@ -29,11 +29,11 @@ public class UserEntity {
     @Column(nullable = false)
     private RoleDto role;
     private String image;
-    @OneToMany(mappedBy = "author")
-    private List<Ad> ads;
-
-    @OneToMany(mappedBy = "author")
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "author")
+//    private List<Ad> ads;
+//
+//    @OneToMany(mappedBy = "author")
+//    private List<Comment> comments;
 
     @Override
     public final boolean equals(Object o) {

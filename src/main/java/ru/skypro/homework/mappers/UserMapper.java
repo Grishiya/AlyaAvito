@@ -1,11 +1,12 @@
 package ru.skypro.homework.mappers;
 
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.models.UserEntity;
-
+@Component
 public class UserMapper {
 
-    public static UserEntity toUser(UserDto userDto) {
+    public  UserEntity toUser(UserDto userDto) {
 
         if (userDto == null) {
             throw new NullPointerException("Tried to map null to UserEntity");
@@ -24,22 +25,15 @@ public class UserMapper {
         return userEntity;
     }
 
-    public static UserDto fromUser(UserEntity userEntity) {
-        if (userEntity == null) {
-            throw new NullPointerException("Tried to map null to UserEntity");
-        }
-
-        UserDto userDto = new UserDto();
-
-        userDto.setId(userEntity.getId());
-        userDto.setEmail(userEntity.getEmail());
-        userDto.setFirstName(userEntity.getFirstName());
-        userDto.setLastName(userEntity.getLastName());
-        userDto.setPhone(userEntity.getPhone());
-        userDto.setRole(userEntity.getRole());
-        userDto.setImage(userEntity.getImage());
-
-        return userDto;
-
+    public UserDto userToUserDTO(UserEntity user) {
+        UserDto userDTO = new UserDto();
+        userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setPhone(user.getPhone());
+        userDTO.setRole(user.getRole());
+        userDTO.setImage(user.getImage());
+        return userDTO;
     }
 }
