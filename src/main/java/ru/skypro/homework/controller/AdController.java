@@ -31,7 +31,7 @@ public class AdController {
     @GetMapping("/me")
     public AdsDto getAdsMe() {
         return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
-                new AdDto(1,null,2,150,"Teest2")));
+                new AdDto(1,null,2,150,"Teeууst2")));
     }
 
     @GetMapping("/{id}")
