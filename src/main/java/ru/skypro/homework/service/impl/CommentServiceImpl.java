@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
                     () -> new NoSuchElementException("Comment bot found")
             );
         }
-            if (commentEntity == null) {
+            if (commentEntity ==  null) {
                 commentEntity= new Comment();
                 commentEntity.setCreatedAt(LocalDateTime.now().
                         toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.
