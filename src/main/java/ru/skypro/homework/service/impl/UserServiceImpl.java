@@ -1,6 +1,9 @@
 package ru.skypro.homework.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.exception.UserAlreadyAddedException;
 import ru.skypro.homework.mappers.UserMapper;
@@ -15,31 +18,44 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper){
-        this.userRepository=userRepository;
-        this.userMapper = userMapper;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-
-
     @Override
-    public UserDto read(Integer id) {
+    public UserDto getUser(Integer id) {
         UserEntity user = userRepository.findById(id).orElseThrow(
                 ()-> new NoSuchElementException("THis user not found"));
 
-        return userMapper.userToUserDTO(user);
+        return UserMapper.userEntityToUserDto(getUserEntity(id));
     }
 
     @Override
-    public UserEntity update(UserEntity userEntity) {
-        Optional<UserEntity> check = userRepository.findById(userEntity.getId());
-        if(check.isEmpty()){
-            throw new NoSuchElementException("This userEntity not found!");
+    public UserEntity getUserEntity(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
         }
 
-        return userRepository.save(userEntity);
+    @Override
+    public UpdateUserDto updateUser(UpdateUserDto userDto) {
+        var userEntity = userRepository.findById(1).orElseThrow(() -> new NoSuchElementException("User not found"));
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
+        userEntity.setPhone(userDto.getPhone());
+        var save = userRepository.save(userEntity);
+        return UserMapper.userEntityToUpdateUser(save);
     }
 
+    @Override
+    public void updatePassword(NewPasswordDto passwordDto) {
+        var user = userRepository.findById(1).orElseThrow(() -> new NoSuchElementException("User not found"));
+        user.setPassword(passwordDto.getCurrentPassword());
+        userRepository.save(user);
+
+    }
+
+    @Override
+    public void updateAvatar(MultipartFile file) {
+    }
 }

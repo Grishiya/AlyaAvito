@@ -1,6 +1,5 @@
 package ru.skypro.homework.service.impl;
 
-import lombok.Getter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,14 +31,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(RegisterDto register) {
-        if (manager.userExists(register.getUsername())) {
+        if (manager.userExists(register.getEmail())) {
             return false;
         }
         manager.createUser(
                 User.builder()
                         .passwordEncoder(this.encoder::encode)
                         .password(register.getPassword())
-                        .username(register.getUsername())
+                        .username(register.getEmail())
                         .roles(register.getRole().name())
                         .build());
         return true;
