@@ -35,7 +35,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDto getAllAds() {
         List<AdDto> ads;
-        ads = adRepository.findAll().stream().map(AdMapper::fromAd).collect(Collectors.toList());
+        ads = adRepository.findAll().stream().map(AdMapper: :fromAd).collect(Collectors.toList());
         return new AdsDto(ads.size(), ads);
     }
 
