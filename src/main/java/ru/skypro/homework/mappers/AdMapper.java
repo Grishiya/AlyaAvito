@@ -1,33 +1,30 @@
 package ru.skypro.homework.mappers;
 
 import ru.skypro.homework.dto.AdDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.UserEntity;
 
 public class AdMapper {
 
-    public static Ad toAd(AdDto adDto, UserEntity author) {
+    public static Ad createOrUpdateAdDtoInAd(CreateOrUpdateAdDto adDto,Ad ad) {
         if (adDto == null) {
-            throw new NullPointerException("Tried to map null to Ad");
+            throw new
+                    NullPointerException("Tried to map null to AdDto");
         }
-
-
-        Ad ad = new Ad();
-
-        ad.setId(adDto.getPk());
-        ad.setAuthor(author);
-        ad.setImage(adDto.getImage());
-        ad.setPrice(adDto.getPrice());
+        if (ad == null){
+            ad = new Ad();
+        }
         ad.setTitle(adDto.getTitle());
-
+        ad.setPrice(adDto.getPrice());
+        ad.setDescription(adDto.getDescription());
         return ad;
-
     }
 
     public static AdDto fromAd(Ad ad) {
         if (ad == null) {
-            throw new NullPointerException("Tried to map null to AdDto");
+            throw new NullPointerException("Tried to map null to Ad");
         }
 
         AdDto adDto = new AdDto();
@@ -43,7 +40,7 @@ public class AdMapper {
 
     public static ExtendedAdDto fromExtendedAd(Ad ad) {
         if (ad == null) {
-            throw new NullPointerException("Tried to map null to AdDto");
+            throw new NullPointerException("Tried to map null to Ad");
         }
 
         ExtendedAdDto extendedAdDto = new ExtendedAdDto();

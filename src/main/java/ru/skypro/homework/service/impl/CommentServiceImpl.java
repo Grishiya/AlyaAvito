@@ -1,36 +1,67 @@
 package ru.skypro.homework.service.impl;
 
 import org.springframework.stereotype.Service;
+import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.CommentsDto;
+import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
+import ru.skypro.homework.mappers.CommentMapper;
 import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.Comment;
 import ru.skypro.homework.repository.CommentRepository;
+import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.UserService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+    private final UserService userService;
+    private final AdService adService;
 
-
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserService userService, AdService adService) {
         this.commentRepository = commentRepository;
+        this.userService = userService;
+        this.adService = adService;
     }
 
-
-    public Comment create(Comment comment) {
-        return commentRepository.save(comment);
-    }
-
-    public Comment read(Integer id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-        if (comment.isEmpty()) {
-            throw new NoSuchElementException("This comment not found");
+    @Override
+    public CommentDto createOrUpdateCommentDto(CreateOrUpdateCommentDto comment,
+                                               Integer commentId, Integer adId) {
+        var ad = adService.getAdEntity(adId);
+        Comment commentEntity = null;
+        if (commentId != null && commentId != 0) {
+            commentEntity = commentRepository.findById(commentId).orElseThrow(
+                    () -> new NoSuchElementException("Comment bot found")
+            );
         }
-        return comment.get();
+            if (commentEntity == null) {
+                commentEntity= new Comment();
+                commentEntity.setCreatedAt(LocalDateTime.now().
+                        toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.
+                                now()))*1000);
+            }
+            commentEntity.setAd(ad);
+            commentEntity.setAuthor(userService.getUserEntity(1));
+            commentEntity = CommentMapper.createOrUpdateCommentDtoInComment(comment, commentEntity);
+            commentEntity.setPkId(adId);
+            var save = commentRepository.save(commentEntity);
+            return CommentMapper.commentToCommentDto(save);
+
+    }
+
+    @Override
+    public CommentsDto getCommentsForAd(Integer idAd) {
+        var comment = commentRepository.findByAdId(idAd).stream().map(
+                CommentMapper::commentToCommentDto).collect(Collectors.toList());
+        return new CommentsDto(comment.size(), comment);
     }
 
     public Comment update(Comment comment) {
@@ -42,18 +73,12 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
-    public Comment delete(Integer id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-        if (comment.isEmpty()) {
-            throw new NoSuchElementException("This comment not found");
-        }
-        commentRepository.deleteById(id);
+    @Override
+    public void delete(Integer commentId, Integer adId) {
+        var comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new NoSuchElementException("Comment not found")
+        );
 
-        Comment deleteComment = comment.get();
-
-        return deleteComment;
+        commentRepository.delete(comment);
     }
-
-
-
 }

@@ -41,7 +41,7 @@ public class AdController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AdDto create(@RequestPart CreateOrUpdateAdDto adDto, @RequestBody MultipartFile multipartFile) {
-        var user = new UserDto(1, "testexample@Mail.ru", "test", "test", "+79000000000", RoleDto.USER, null);
+        var user = new UserDto(1, "testexample@Mail.ru", "te2st", "te2st", "+79000000000", RoleDto.USER, null);
         return AdMapper.fromAd(adService.create(adDto,user.getId()));
     }
     @DeleteMapping("/{id}")

@@ -18,15 +18,18 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false,length = 55)
+    @Column(nullable = false, length = 55)
     private String email;
+    @Column(nullable = false, length = 16)
+    private String password;
     @Column(nullable = false, length = 32)
     private String firstName;
     @Column(nullable = false, length = 32)
     private String lastName;
-    @Column(nullable = false,length = 12)
+    @Column(nullable = false, length = 12)
     private String phone;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private RoleDto role;
     private String image;
     @OneToMany(mappedBy = "author")

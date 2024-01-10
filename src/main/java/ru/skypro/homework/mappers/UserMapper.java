@@ -1,45 +1,49 @@
 package ru.skypro.homework.mappers;
 
+import org.springframework.stereotype.Component;
+import ru.skypro.homework.dto.RegisterDto;
+import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.models.UserEntity;
-
+@Component
 public class UserMapper {
 
-    public static UserEntity toUser(UserDto userDto) {
-
-        if (userDto == null) {
+    public UserEntity registerDtoInUserEntity(RegisterDto dto) {
+        if (dto == null) {
             throw new NullPointerException("Tried to map null to UserEntity");
         }
-
         UserEntity userEntity = new UserEntity();
-
-        userEntity.setId(userDto.getId());
-        userEntity.setEmail(userDto.getEmail());
-        userEntity.setFirstName(userDto.getFirstName());
-        userEntity.setLastName(userDto.getLastName());
-        userEntity.setPhone(userDto.getPhone());
-        userEntity.setRole(userDto.getRole());
-        userEntity.setImage(userDto.getImage());
-
+        userEntity.setEmail(dto.getEmail());
+        userEntity.setFirstName(dto.getFirstName());
+        userEntity.setLastName(dto.getLastName());
+        userEntity.setPhone(dto.getPhone());
+        userEntity.setRole(dto.getRole());
         return userEntity;
     }
 
-    public static UserDto fromUser(UserEntity userEntity) {
-        if (userEntity == null) {
+    public static UserDto userEntityToUserDto(UserEntity user) {
+        if (user == null) {
+            throw new NullPointerException("Tried to map null to UserDto");
+        }
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setPhone(user.getPhone());
+        userDto.setRole(user.getRole());
+        userDto.setImage(user.getImage());
+        return userDto;
+    }
+
+    public static UpdateUserDto userEntityToUpdateUser(UserEntity user) {
+        if (user == null) {
             throw new NullPointerException("Tried to map null to UserEntity");
         }
-
-        UserDto userDto = new UserDto();
-
-        userDto.setId(userEntity.getId());
-        userDto.setEmail(userEntity.getEmail());
-        userDto.setFirstName(userEntity.getFirstName());
-        userDto.setLastName(userEntity.getLastName());
-        userDto.setPhone(userEntity.getPhone());
-        userDto.setRole(userEntity.getRole());
-        userDto.setImage(userEntity.getImage());
-
-        return userDto;
-
+        var updateUser = new UpdateUserDto();
+        updateUser.setFirstName(user.getFirstName());
+        updateUser.setLastName(user.getLastName());
+        updateUser.setPhone(user.getPhone());
+        return updateUser;
     }
 }
