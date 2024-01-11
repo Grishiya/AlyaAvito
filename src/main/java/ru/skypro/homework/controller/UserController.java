@@ -17,20 +17,23 @@ import ru.skypro.homework.service.UserService;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @PostMapping("/set_password")
     public ResponseEntity<String> setPassword(@RequestBody NewPasswordDto newPassword) {
+        userService.updatePassword(newPassword);
         return ResponseEntity.ok("Ok");
     }
 
     @GetMapping("/me")
-    public UserDto getUser(UserEntity userEntity) {
+    public UserDto getUser() {
 
-        return userService.read(userEntity.getId());
+        return userService.getUser(1);
     }
 
     @PatchMapping("/me")
-    public UpdateUserDto updateUser(@RequestBody UpdateUserDto updateUser) {
-        return updateUser;
+    public UpdateUserDto updateUser(@RequestBody UpdateUserDto updateUser)
+    {
+        return userService.updateUser(updateUser);
     }
 
     @PatchMapping("/me/image")

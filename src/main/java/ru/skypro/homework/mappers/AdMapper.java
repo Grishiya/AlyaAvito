@@ -4,7 +4,6 @@ import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.models.Ad;
-import ru.skypro.homework.models.UserEntity;
 
 public class AdMapper {
 
