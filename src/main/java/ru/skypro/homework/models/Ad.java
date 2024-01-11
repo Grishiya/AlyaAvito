@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -15,10 +16,12 @@ import java.util.Objects;
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
    @ManyToOne
    @JoinColumn(name = "author_id",nullable = false)
     private UserEntity author;
+    @OneToMany(mappedBy = "ad")
+    private List<Comment> comments;
     private String image;
     @Column(nullable = false)
 private Integer price;

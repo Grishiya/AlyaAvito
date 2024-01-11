@@ -23,40 +23,37 @@ public class AdController {
 
     @GetMapping
     public AdsDto getAllAds() {
-        return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
-                new AdDto(1,null,2,150,"Test2")));
+        return adService.getAllAds();
     }
 
 
     @GetMapping("/me")
     public AdsDto getAdsMe() {
-        return new AdsDto(2,List.of(new AdDto(1,null,1,100,"Test"),
-                new AdDto(1,null,2,150,"Teeууst2")));
+        return adService.getMyAds(0);
     }
 
     @GetMapping("/{id}")
-        public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
-            return AdMapper.fromExtendedAd(adService.read(id));
-        }
+    public ExtendedAdDto getExtendedAdDto(@PathVariable Integer id) {
+        return adService.getExtAdDto(id);
+    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AdDto create(@RequestPart CreateOrUpdateAdDto adDto, @RequestBody MultipartFile multipartFile) {
-        var user = new UserDto(1, "testexample@Mail.ru", "te2st", "te2st", "+79000000000", RoleDto.USER, null);
-        return AdMapper.fromAd(adService.create(adDto,user.getId()));
+        return adService.createAd(adDto, 1);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> removeAd(@PathVariable Integer id) {
-
+        adService.deleteAd(id);
         return ResponseEntity.ok("OK");
     }
 
     @PatchMapping("/{id}")
     public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
-        return new AdDto(1, null, 1,
-                createOrUpdateAdDto.getPrice() , createOrUpdateAdDto.getTitle());
+        return adService.createAd(createOrUpdateAdDto, id);
     }
 
-    @PatchMapping(value = "/{adId}/image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{adId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> updateImage(@PathVariable Integer adId, @RequestParam("image") MultipartFile image) {
         return ResponseEntity.ok().build();
     }

@@ -1,6 +1,5 @@
 package ru.skypro.homework.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
@@ -9,16 +8,12 @@ import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.mappers.AdMapper;
 import ru.skypro.homework.models.Ad;
-import ru.skypro.homework.models.UserEntity;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,14 +30,14 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDto getAllAds() {
         List<AdDto> ads;
-        ads = adRepository.findAll().stream().map(AdMapper: :fromAd).collect(Collectors.toList());
+        ads = adRepository.findAll().stream().map(AdMapper::fromAd).collect(Collectors.toList());
         return new AdsDto(ads.size(), ads);
     }
 
     @Override
     public AdsDto getMyAds( Integer userId) {
         userId = 1;
-        var ads = adRepository.findByUserId(userId).stream()
+        var ads = adRepository.findByAuthorId(userId).stream()
                 .map(AdMapper::fromAd).collect(Collectors.toList());
         return new AdsDto(ads.size(), ads);
     }
