@@ -1,5 +1,6 @@
 package ru.skypro.homework.service.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
@@ -18,7 +19,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -49,10 +55,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(NewPasswordDto passwordDto) {
-        var user = userRepository.findById(1).orElseThrow(() -> new NoSuchElementException("User not found"));
-        user.setPassword(passwordDto.getCurrentPassword());
+        var user = getUserEntity();
+        user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
         userRepository.save(user);
-
     }
 
     @Override
