@@ -31,9 +31,10 @@ public class UserEntity {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RoleDto role;
-    private String image;
+    private byte[] image;
     @OneToMany(mappedBy = "author")
     private List<Ad> ads;
+
 
     @OneToMany(mappedBy = "author")
     private List<Comment> comments;

@@ -1,6 +1,8 @@
 package ru.skypro.homework.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +12,8 @@ import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.models.UserEntity;
 import ru.skypro.homework.service.UserService;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/users")
@@ -36,8 +40,22 @@ public class UserController {
         return userService.updateUser(updateUser);
     }
 
-    @PatchMapping("/me/image")
-    public ResponseEntity<String> updateUserImage(@RequestPart("image") MultipartFile image) {
-        return ResponseEntity.ok("Ok");
+    @PostMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateUserImage
+            (@PathVariable Integer userId,@RequestParam MultipartFile image)throws IOException {
+
+        userService.updateAvatar(userId, image);
+
+        return ResponseEntity.ok("picture is save");
     }
+
+    @GetMapping("/{id}/image-from-db")
+    public ResponseEntity<byte[]> downloadImageFromDb(@PathVariable Integer id){
+
+        UserEntity image = userService.readFromDb(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentLength(image.getImage().length);
+        return ResponseEntity.ok().headers(headers).body(image.getImage());
+    }
+
 }

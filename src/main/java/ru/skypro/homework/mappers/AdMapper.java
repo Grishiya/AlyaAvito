@@ -49,7 +49,7 @@ public class AdMapper {
         extendedAdDto.setAuthorLastName(ad.getAuthor().getLastName());
         extendedAdDto.setDescription(ad.getDescription());
         extendedAdDto.setEmail(ad.getAuthor().getEmail());
-        extendedAdDto.setImage(ad.getImage());
+//        extendedAdDto.setImage(ad.getImage());
         extendedAdDto.setPhone(ad.getAuthor().getPhone());
         extendedAdDto.setPrice(ad.getPrice());
         extendedAdDto.setTitle(ad.getTitle());
