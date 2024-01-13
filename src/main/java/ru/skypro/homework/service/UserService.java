@@ -8,13 +8,17 @@ import ru.skypro.homework.models.UserEntity;
 
 public interface UserService {
 
-    UserDto getUser(Integer id);
+    UserDto getUser();
 
-    UserEntity getUserEntity(Integer id);
+    UserEntity getUserEntity();
 
     UpdateUserDto updateUser(UpdateUserDto userDto);
 
     void updatePassword(NewPasswordDto newPasswordDto);
 
     void updateAvatar(MultipartFile file);
+
+    Integer getUserId();
+
+    boolean featuresRole(Integer id);
 }

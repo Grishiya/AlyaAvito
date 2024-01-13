@@ -8,21 +8,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig implements WebMvcConfigurer {
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
-    }
-@Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-    return new JdbcUserDetailsManager(User.builder()
-            .username("/Admin")
-            .password("/password")
-            .roles("/ADMIN")
-            .build());
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }

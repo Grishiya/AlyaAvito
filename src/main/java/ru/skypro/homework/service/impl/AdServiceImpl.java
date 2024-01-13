@@ -67,7 +67,7 @@ public class AdServiceImpl implements AdService {
             adRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Ad not found"));
         }
         ad = AdMapper.createOrUpdateAdDtoInAd(adDto, ad);
-        var user = userService.getUserEntity(1);
+        var user = userService.getUserEntity();
         ad.setAuthor(user);
         var save = adRepository.save(ad);
         return AdMapper.fromAd(save);

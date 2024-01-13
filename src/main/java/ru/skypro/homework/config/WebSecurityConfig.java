@@ -24,20 +24,9 @@ public class WebSecurityConfig {
             "/login",
             "/register",
             "/ads",
-            "/comments"
+            "/comments/**"
     };
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user =
-                User.builder()
-                        .username("user@gmail.com")
-                        .password("password")
-                        .passwordEncoder(passwordEncoder::encode)
-                        .roles(RoleDto.USER.name())
-                        .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -46,12 +35,11 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
-                                        .mvcMatchers(AUTH_WHITELIST)
-                                        .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
-                                        .authenticated())
-                .cors()
-                .and()
+                                        .authenticated()
+                .mvcMatchers(AUTH_WHITELIST)
+                .permitAll())
+                .cors(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
     }

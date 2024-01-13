@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
                                 now()))*1000);
             }
             commentEntity.setAd(ad);
-            commentEntity.setAuthor(userService.getUserEntity(1));
+            commentEntity.setAuthor(userService.getUserEntity());
             commentEntity = CommentMapper.createOrUpdateCommentDtoInComment(comment, commentEntity);
             commentEntity.setPkId(adId);
             var save = commentRepository.save(commentEntity);

@@ -1,18 +1,23 @@
 package ru.skypro.homework.service.impl;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.RoleDto;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.exception.UserAlreadyAddedException;
 import ru.skypro.homework.mappers.UserMapper;
 import ru.skypro.homework.models.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.security.SecurityUser;
 import ru.skypro.homework.service.UserService;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,17 +36,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(Integer id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(
-                ()-> new NoSuchElementException("THis user not found"));
+    public UserDto getUser() {
 
-        return UserMapper.userEntityToUserDto(getUserEntity(id));
+        return UserMapper.userEntityToUserDto(getUserEntity());
     }
 
     @Override
-    public UserEntity getUserEntity(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
-        }
+    public UserEntity getUserEntity() {
+        var user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getUserEntity();        }
 
     @Override
     public UpdateUserDto  updateUser(UpdateUserDto userDto) {
@@ -62,5 +65,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateAvatar(MultipartFile file) {
+    }
+
+    @Override
+    public Integer getUserId() {
+        var user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getId();
+    }
+    @Override
+    public boolean featuresRole(Integer id){
+        return Objects.equals(getUserId(), id) || getUser().getRole() == RoleDto.ADMIN;
     }
 }

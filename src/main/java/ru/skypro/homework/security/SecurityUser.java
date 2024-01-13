@@ -1,31 +1,27 @@
 package ru.skypro.homework.security;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.skypro.homework.models.UserEntity;
 
 import java.util.Collection;
 import java.util.List;
 
-@Data
-public class SecurityUser implements UserDetails {
 
-    public SecurityUser(String username, String password, List<SimpleGrantedAuthority> authorities, boolean isActive) {
+public class SecurityUser extends User {
+    @Getter
+    private final Integer id;
+    @Getter
+    private final UserEntity userEntity;
 
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
-        this.isActive = isActive;
+
+    public SecurityUser (UserEntity userEntity) {
+        super(userEntity.getEmail(), userEntity.getPassword(), List.of());
+        this.id = userEntity.getId();
+        this.userEntity = userEntity;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
 }
