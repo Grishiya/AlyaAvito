@@ -22,7 +22,7 @@ public class Ad {
     private UserEntity author;
     @OneToMany(mappedBy = "ad")
     private List<Comment> comments;
-    private String image;
+    private byte[] image;
     @Column(nullable = false)
 private Integer price;
     @Column(nullable = false)

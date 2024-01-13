@@ -7,6 +7,8 @@ import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.models.Ad;
 
+import java.io.IOException;
+
 public interface AdService {
 
 
@@ -22,5 +24,5 @@ public interface AdService {
 
     void deleteAd(Integer id);
 
-    byte[] updateImage(MultipartFile file);
+    void updateImage(Integer authorId,MultipartFile file) throws IOException;
 }

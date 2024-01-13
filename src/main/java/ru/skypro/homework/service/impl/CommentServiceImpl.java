@@ -1,5 +1,7 @@
 package ru.skypro.homework.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CommentsDto;
@@ -25,16 +27,26 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final AdService adService;
+    private final Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
+
 
     public CommentServiceImpl(CommentRepository commentRepository, UserService userService, AdService adService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.adService = adService;
     }
-
+    /**
+     * The method create or update Comment and save it in the database
+     *
+     * @param comment, commentId, adId
+     * @return commentEntity
+     * @throws NoSuchElementException Comment bot found
+     */
     @Override
     public CommentDto createOrUpdateCommentDto(CreateOrUpdateCommentDto comment,
                                                Integer commentId, Integer adId) {
+        logger.info("The createOrUpdateCommentDto method was called with data" + comment + "," + commentId + "and" + adId);
+
         var ad = adService.getAdEntity(adId);
         Comment commentEntity = null;
         if (commentId != null && commentId != 0) {
@@ -56,14 +68,27 @@ public class CommentServiceImpl implements CommentService {
             return CommentMapper.commentToCommentDto(save);
 
     }
-
+    /**
+     * The method get comment for Ad and collect to list
+     *
+     * @param idAd
+     * @return commentsDto
+     */
     @Override
     public CommentsDto getCommentsForAd(Integer idAd) {
+        logger.info("The getCommentsForAd method was called with data" + idAd);
+
         var comment = commentRepository.findByAdId(idAd).stream().map(
                 CommentMapper::commentToCommentDto).collect(Collectors.toList());
         return new CommentsDto(comment.size(), comment);
     }
-
+    /**
+     * The method update comment and save to database
+     *
+     * @param comment
+     * @return comment
+     * @throws NoSuchElementException This comment not found
+     */
     public Comment update(Comment comment) {
         Optional<Comment> check = commentRepository.findById(comment.getAuthor().getId());
         if (check.isEmpty()) {
@@ -72,9 +97,16 @@ public class CommentServiceImpl implements CommentService {
 
         return commentRepository.save(comment);
     }
-
+    /**
+     * The method delete comment
+     *
+     * @param commentId, adId
+     * @throws NoSuchElementException Comment not found
+     */
     @Override
     public void delete(Integer commentId, Integer adId) {
+        logger.info("The delete method was called with data" + commentId + "and" + adId);
+
         var comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new NoSuchElementException("Comment not found")
         );
