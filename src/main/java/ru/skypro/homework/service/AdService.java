@@ -23,5 +23,6 @@ public interface AdService {
 
     void deleteAd(Integer id);
 
-    byte[] updateImage(MultipartFile file);
+
+    byte[] updateImage(Integer id,MultipartFile file);
 }

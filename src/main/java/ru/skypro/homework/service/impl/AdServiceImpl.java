@@ -75,7 +75,9 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public byte[] updateImage(MultipartFile file) {
+    public byte[] updateImage(Integer id, MultipartFile file) {
+        var ad = getAdEntity(id);
+        adRepository.save(ad);
         return new byte[0];
     }
 }

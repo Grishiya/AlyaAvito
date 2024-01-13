@@ -8,12 +8,12 @@ import ru.skypro.homework.models.UserEntity;
 @Component
 public class UserMapper {
 
-    public UserEntity registerDtoInUserEntity(RegisterDto dto) {
+    public static UserEntity registerDtoInUserEntity(RegisterDto dto) {
         if (dto == null) {
             throw new NullPointerException("Tried to map null to UserEntity");
         }
         UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(dto.getEmail());
+        userEntity.setEmail(dto.getUsername());
         userEntity.setFirstName(dto.getFirstName());
         userEntity.setLastName(dto.getLastName());
         userEntity.setPhone(dto.getPhone());
@@ -27,7 +27,7 @@ public class UserMapper {
         }
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setEmail(user.getEmail());
+        userDto.setUsername(user.getEmail());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setPhone(user.getPhone());

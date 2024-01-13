@@ -36,13 +36,13 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto createOrUpdateCommentDto(CreateOrUpdateCommentDto comment,
                                                Integer commentId, Integer adId) {
         var ad = adService.getAdEntity(adId);
-        Comment commentEntity = null;
+        Comment commentEntity;
         if (commentId != null && commentId != 0) {
             commentEntity = commentRepository.findById(commentId).orElseThrow(
-                    () -> new NoSuchElementException("Comment bot found")
-            );
+                     () -> new NoSuchElementException("Comment bot found")
+            );commentEntity.setText(comment.getText());
         }
-            if (commentEntity ==  null) {
+            else {
                 commentEntity= new Comment();
                 commentEntity.setCreatedAt(LocalDateTime.now().
                         toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.

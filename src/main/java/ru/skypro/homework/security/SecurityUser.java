@@ -11,15 +11,14 @@ import java.util.Collection;
 import java.util.List;
 
 
+@Getter
 public class SecurityUser extends User {
-    @Getter
     private final Integer id;
-    @Getter
     private final UserEntity userEntity;
 
 
     public SecurityUser (UserEntity userEntity) {
-        super(userEntity.getEmail(), userEntity.getPassword(), List.of());
+        super(userEntity.getEmail(), userEntity.getPassword(), List.of(userEntity.getRole()));
         this.id = userEntity.getId();
         this.userEntity = userEntity;
     }
