@@ -32,7 +32,11 @@ public class AdServiceImpl implements AdService {
         this.adRepository = adRepository;
         this.userService = userService;
     }
-
+    /**
+     * The method gets all Ads and save it in the database
+     *
+     * @return a new AdsDto
+     */
     @Override
     public AdsDto getAllAds() {
         logger.info("The getAllAds method was called");
@@ -40,7 +44,12 @@ public class AdServiceImpl implements AdService {
         ads = adRepository.findAll().stream().map(AdMapper::fromAd).collect(Collectors.toList());
         return new AdsDto(ads.size(), ads);
     }
-
+    /**
+     * The method gets user Ads
+     *
+     * @param userId
+     * @return a new AdsDto
+     */
     @Override
     public AdsDto getMyAds( Integer userId) {
         logger.info("The getMyAds method was called with data" + userId);
@@ -49,14 +58,25 @@ public class AdServiceImpl implements AdService {
                 .map(AdMapper::fromAd).collect(Collectors.toList());
         return new AdsDto(ads.size(), ads);
     }
-
+    /**
+     * The method gets ExtendedAdDto
+     *
+     * @param id
+     * @return AdEntity
+     */
     @Override
     public ExtendedAdDto getExtAdDto(Integer id) {
         logger.info("The getExtAdDto method was called with data" + id);
 
         return AdMapper.fromExtendedAd(getAdEntity(id));
     }
-
+    /**
+     * The method gets AdEntity
+     *
+     * @param id
+     * @return AdEntity
+     * @throws NoSuchElementException Ad not found.
+     */
     @Override
     public Ad getAdEntity(Integer id) {
         logger.info("The getAdEntity method was called with data" + id);
@@ -64,7 +84,12 @@ public class AdServiceImpl implements AdService {
         return adRepository.findById(id).orElseThrow(()->
                 new NoSuchElementException("Ad not found."));
     }
-
+    /**
+     * The method delete Ad
+     *
+     * @param id
+     * @throws NoSuchElementException Ad not found.
+     */
     @Override
     public void deleteAd(Integer id) {
         logger.info("The deleteAd method was called with data" + id);
@@ -73,7 +98,13 @@ public class AdServiceImpl implements AdService {
                 new NoSuchElementException("Ad not fond"));
     adRepository.delete(ad);
     }
-
+    /**
+     * The method create Ad and save to database
+     *
+     * @param adDto, id
+     * @return Ad
+     * @throws NoSuchElementException Ad not found.
+     */
     @Override
     public AdDto createAd(CreateOrUpdateAdDto adDto, Integer id) {
         logger.info("The createAd method was called with data" + adDto + "and" + id);
@@ -99,13 +130,5 @@ public class AdServiceImpl implements AdService {
 
     }
 
-//    @Override
-//    public void updateAvatar(Integer userId, MultipartFile imageFile) throws IOException {
-//
-//        UserEntity userPhoto = userRepository.findById(userId).orElse(new UserEntity());
-//        userPhoto.setImage(imageFile.getBytes());
-//
-//        userRepository.save(userPhoto);
-//
-//    }
+
 }

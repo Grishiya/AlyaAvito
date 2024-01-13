@@ -24,7 +24,12 @@ public class AuthServiceImpl implements AuthService {
         this.manager = manager;
         this.encoder = passwordEncoder;
     }
-
+    /**
+     * The method create login
+     *
+     * @param userName, password
+     * @return encoder password
+     */
     @Override
     public boolean login(String userName,  String password) {
         logger.info("The login method was called with data" + userName + "and" + password);
@@ -35,7 +40,12 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = manager.loadUserByUsername(userName);
         return encoder.matches(password, userDetails.getPassword());
     }
-
+    /**
+     * The method creates register
+     *
+     * @param register
+     * @return register
+     */
     @Override
     public boolean register(RegisterDto register) {
         logger.info("The register method was called with data" + register );

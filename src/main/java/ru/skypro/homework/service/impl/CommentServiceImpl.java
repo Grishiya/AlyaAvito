@@ -35,7 +35,13 @@ public class CommentServiceImpl implements CommentService {
         this.userService = userService;
         this.adService = adService;
     }
-
+    /**
+     * The method create or update Comment and save it in the database
+     *
+     * @param comment, commentId, adId
+     * @return commentEntity
+     * @throws NoSuchElementException Comment bot found
+     */
     @Override
     public CommentDto createOrUpdateCommentDto(CreateOrUpdateCommentDto comment,
                                                Integer commentId, Integer adId) {
@@ -62,7 +68,12 @@ public class CommentServiceImpl implements CommentService {
             return CommentMapper.commentToCommentDto(save);
 
     }
-
+    /**
+     * The method get comment for Ad and collect to list
+     *
+     * @param idAd
+     * @return commentsDto
+     */
     @Override
     public CommentsDto getCommentsForAd(Integer idAd) {
         logger.info("The getCommentsForAd method was called with data" + idAd);
@@ -71,7 +82,13 @@ public class CommentServiceImpl implements CommentService {
                 CommentMapper::commentToCommentDto).collect(Collectors.toList());
         return new CommentsDto(comment.size(), comment);
     }
-
+    /**
+     * The method update comment and save to database
+     *
+     * @param comment
+     * @return comment
+     * @throws NoSuchElementException This comment not found
+     */
     public Comment update(Comment comment) {
         Optional<Comment> check = commentRepository.findById(comment.getAuthor().getId());
         if (check.isEmpty()) {
@@ -80,7 +97,12 @@ public class CommentServiceImpl implements CommentService {
 
         return commentRepository.save(comment);
     }
-
+    /**
+     * The method delete comment
+     *
+     * @param commentId, adId
+     * @throws NoSuchElementException Comment not found
+     */
     @Override
     public void delete(Integer commentId, Integer adId) {
         logger.info("The delete method was called with data" + commentId + "and" + adId);

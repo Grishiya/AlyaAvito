@@ -37,24 +37,42 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
         this.avatarsDir=avatarsDir;
     }
-
+    /**
+     * The method get user
+     *
+     * @param id
+     * @return userEntity
+     * @throws NoSuchElementException This user not found
+     */
     @Override
     public UserDto getUser(Integer id) {
         logger.info("The getUser method was called with data" + id );
 
         UserEntity user = userRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("THis user not found"));
+                () -> new NoSuchElementException("This user not found"));
 
         return UserMapper.userEntityToUserDto(getUserEntity(id));
     }
-
+    /**
+     * The method get userEntity
+     *
+     * @param id
+     * @return user
+     * @throws NoSuchElementException User not found
+     */
     @Override
     public UserEntity getUserEntity(Integer id) {
         logger.info("The getUserEntity method was called with data" + id );
 
         return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
-
+    /**
+     * The method update user and save in to database
+     *
+     * @param userDto
+     * @return userEntity
+     * @throws NoSuchElementException User not found
+     */
     @Override
     public UpdateUserDto updateUser(UpdateUserDto userDto) {
         logger.info("The updateUser method was called with data" + userDto );
@@ -66,7 +84,12 @@ public class UserServiceImpl implements UserService {
         var save = userRepository.save(userEntity);
         return UserMapper.userEntityToUpdateUser(save);
     }
-
+    /**
+     * The method update Password
+     *
+     * @param passwordDto
+     * @throws NoSuchElementException User not found
+     */
     @Override
     public void updatePassword(NewPasswordDto passwordDto) {
         logger.info("The updatePassword method was called with data" + passwordDto );
