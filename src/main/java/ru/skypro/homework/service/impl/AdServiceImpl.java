@@ -35,9 +35,8 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdsDto getMyAds( Integer userId) {
-        userId = 1;
-        var ads = adRepository.findByAuthorId(userId).stream()
+    public AdsDto getMyAds() {
+        var ads = adRepository.findByAuthorId(userService.getUserId()).stream()
                 .map(AdMapper::fromAd).collect(Collectors.toList());
         return new AdsDto(ads.size(), ads);
     }
@@ -49,28 +48,30 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Ad getAdEntity(Integer id) {
-        return adRepository.findById(id).orElseThrow(()->
-                new NoSuchElementException("Ad not found."));
+        return adRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException("Нет такого объявления"));
     }
 
     @Override
     public void deleteAd(Integer id) {
         var ad = adRepository.findById(id).orElseThrow(() ->
-                new NoSuchElementException("Ad not fond"));
-    adRepository.delete(ad);
+                new NoSuchElementException("Нет такого объявления"));
+        adRepository.delete(ad);
     }
 
     @Override
-    public AdDto createAd(CreateOrUpdateAdDto adDto, Integer id) {
-        Ad ad = null;
-        if (id != 0 && id != null) {
-            adRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Ad not found"));
-        }
-        ad = AdMapper.createOrUpdateAdDtoInAd(adDto, ad);
-        var user = userService.getUserEntity();
-        ad.setAuthor(user);
-        var save = adRepository.save(ad);
-        return AdMapper.fromAd(save);
+    public AdDto createAd(CreateOrUpdateAdDto adDto, MultipartFile multipartFile) {
+        var ad = AdMapper.createOrUpdateAdDtoInAd(adDto);
+        return AdMapper.fromAd(ad);
+    }
+
+    @Override
+    public AdDto updateAd(CreateOrUpdateAdDto adDto, Integer id) {
+        var ad = adRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Ad not found"));
+        ad.setTitle(adDto.getTitle());
+        ad.setDescription(ad.getDescription());
+        ad.setPrice(adDto.getPrice());
+        return AdMapper.fromAd(adRepository.save(ad));
     }
 
     @Override

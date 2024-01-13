@@ -29,7 +29,7 @@ public class AdController {
 
     @GetMapping("/me")
     public AdsDto getAdsMe() {
-        return adService.getMyAds(0);
+        return adService.getMyAds();
     }
 
     @GetMapping("/{id}")
@@ -39,7 +39,7 @@ public class AdController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AdDto create(@RequestPart CreateOrUpdateAdDto adDto, @RequestBody MultipartFile multipartFile) {
-        return adService.createAd(adDto, 1);
+        return adService.createAd(adDto,null);
     }
 
     @DeleteMapping("/{id}")
@@ -50,7 +50,7 @@ public class AdController {
 
     @PatchMapping("/{id}")
     public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
-        return adService.createAd(createOrUpdateAdDto, id);
+        return adService.updateAd(createOrUpdateAdDto,id);
     }
 
     @PatchMapping(value = "/{adId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

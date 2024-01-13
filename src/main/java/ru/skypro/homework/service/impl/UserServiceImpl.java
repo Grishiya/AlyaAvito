@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UpdateUserDto  updateUser(UpdateUserDto userDto) {
-        var userEntity = userRepository.findById(1).orElseThrow(() -> new NoSuchElementException("User not found"));
+        var userEntity = getUserEntity();
         userEntity.setFirstName(userDto.getFirstName());
         userEntity.setLastName(userDto.getLastName());
         userEntity.setPhone(userDto.getPhone());
