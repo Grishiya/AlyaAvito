@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
+import ru.skypro.homework.exception.ActionForbiddenException;
 import ru.skypro.homework.mappers.CommentMapper;
 import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.Comment;
 import ru.skypro.homework.repository.CommentRepository;
+import ru.skypro.homework.security.PermissionChecker;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.UserService;
@@ -39,22 +41,21 @@ public class CommentServiceImpl implements CommentService {
         Comment commentEntity;
         if (commentId != null && commentId != 0) {
             commentEntity = commentRepository.findById(commentId).orElseThrow(
-                     () -> new NoSuchElementException("Comment bot found")
-            );commentEntity.setText(comment.getText());
+                    () -> new NoSuchElementException("Comment bot found")
+            );
+            var user = userService.getUserEntity();
+            if (!PermissionChecker.isActionAllowed(user, ad)) throw new ActionForbiddenException();
+            commentEntity.setText(comment.getText());
+        } else {
+            commentEntity = new Comment();
+            commentEntity.setCreatedAt(LocalDateTime.now().
+                    toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.
+                            now())) * 1000);
         }
-            else {
-                commentEntity= new Comment();
-                commentEntity.setCreatedAt(LocalDateTime.now().
-                        toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.
-                                now()))*1000);
-            }
-            commentEntity.setAd(ad);
-            commentEntity.setAuthor(userService.getUserEntity());
-            commentEntity = CommentMapper.createOrUpdateCommentDtoInComment(comment, commentEntity);
-            commentEntity.setPkId(adId);
-            var save = commentRepository.save(commentEntity);
-            return CommentMapper.commentToCommentDto(save);
-
+        commentEntity.setAd(ad);
+        commentEntity.setAuthor(userService.getUserEntity());
+        var save = commentRepository.save(commentEntity);
+        return CommentMapper.commentToCommentDto(save);
     }
 
     @Override
@@ -64,21 +65,13 @@ public class CommentServiceImpl implements CommentService {
         return new CommentsDto(comment.size(), comment);
     }
 
-    public Comment update(Comment comment) {
-        Optional<Comment> check = commentRepository.findById(comment.getAuthor().getId());
-        if (check.isEmpty()) {
-            throw new NoSuchElementException("This comment not found");
-        }
-
-        return commentRepository.save(comment);
-    }
-
     @Override
     public void delete(Integer commentId, Integer adId) {
         var comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new NoSuchElementException("Comment not found")
         );
-
+        var user = userService.getUserEntity();
+        if (!PermissionChecker.isActionAllowed(user,comment)) throw new ActionForbiddenException();
         commentRepository.delete(comment);
     }
 }

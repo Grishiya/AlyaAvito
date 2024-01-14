@@ -13,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Ad {
+public class Ad implements OwnedEntity,EntityWithImage{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,7 +24,7 @@ public class Ad {
     private List<Comment> comments;
     private String image;
     @Column(nullable = false)
-private Integer price;
+private int price;
     @Column(nullable = false)
 private String title;
     @Column(nullable = false)
@@ -44,5 +44,8 @@ private String description;
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+    public Integer getOwnerId() {
+        return author.getId();
     }
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum RoleDto implements GrantedAuthority {
-    USER("USER"), ADMIN("ADMIN"),
+    USER("USER"), ADMIN("ADMIN")
     ;
     private String value;
 

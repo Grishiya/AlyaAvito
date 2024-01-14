@@ -23,7 +23,7 @@ public class AdMapper {
 
     public static AdDto fromAd(Ad ad) {
         if (ad == null) {
-            throw new NullPointerException("Tried to map null to Ad");
+            throw new NullPointerException("Такого объявления не существует");
         }
 
         AdDto adDto = new AdDto();
@@ -39,7 +39,7 @@ public class AdMapper {
 
     public static ExtendedAdDto fromExtendedAd(Ad ad) {
         if (ad == null) {
-            throw new NullPointerException("Tried to map null to Ad");
+            throw new NullPointerException("Такого объявления не существует");
         }
 
         ExtendedAdDto extendedAdDto = new ExtendedAdDto();

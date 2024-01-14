@@ -5,7 +5,6 @@ import ru.skypro.homework.dto.RegisterDto;
 import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.models.UserEntity;
-@Component
 public class UserMapper {
 
     public static UserEntity registerDtoInUserEntity(RegisterDto dto) {

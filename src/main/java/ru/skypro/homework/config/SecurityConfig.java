@@ -10,11 +10,11 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import java.io.File;
 
-@EnableWebMvc
 @Configuration
+@EnableWebMvc
 public class SecurityConfig implements WebMvcConfigurer {
-    @Value("${path.to.avatars.folder}")
-    private String avatarsDir;
+    @Value("${image-directory}")
+    private String path;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/content/**").allowedOrigins("http://localhost:3000");
@@ -22,9 +22,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String location = "file:" + new File(avatarsDir).getAbsolutePath().replace("\\", "/") +"/";;
+        String location = "file:" + new File(path).getAbsolutePath().replace("\\", "/") + "/";
+        ;
         registry.addResourceHandler("/content/**")
-                .addResourceLocations(location+"Ad/",location + "UserEntity/")
+                .addResourceLocations(location + "Ad/", location + "UserEntity/")
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver());
     }
