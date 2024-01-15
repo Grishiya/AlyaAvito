@@ -3,6 +3,7 @@ package ru.skypro.homework.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class Comment implements OwnedEntity{
     @ManyToOne
     @JoinColumn(name = "author_id",nullable = false)
     private UserEntity author;
-    private Long createdAt;
+    private Instant createdAt;
     @Column(nullable = false)
     private String text;
     @ManyToOne

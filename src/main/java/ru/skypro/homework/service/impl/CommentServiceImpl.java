@@ -14,6 +14,7 @@ import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.UserService;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -48,9 +49,7 @@ public class CommentServiceImpl implements CommentService {
             commentEntity.setText(comment.getText());
         } else {
             commentEntity = new Comment();
-            commentEntity.setCreatedAt(LocalDateTime.now().
-                    toEpochSecond(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.
-                            now())) * 1000);
+            commentEntity.setCreatedAt(Instant.now());
         }
         commentEntity.setAd(ad);
         commentEntity.setAuthor(userService.getUserEntity());
