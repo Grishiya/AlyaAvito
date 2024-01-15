@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import ru.skypro.homework.dto.*;
 import ru.skypro.homework.mappers.AdMapper;
 import ru.skypro.homework.service.AdService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,7 +31,7 @@ public class AdController {
 
     @GetMapping("/me")
     public AdsDto getAdsMe() {
-        return adService.getMyAds(0);
+        return adService.getMyAds();
     }
 
     @GetMapping("/{id}")
@@ -39,7 +41,7 @@ public class AdController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AdDto create(@RequestPart CreateOrUpdateAdDto adDto, @RequestBody MultipartFile multipartFile) {
-        return adService.createAd(adDto, 1);
+        return adService.createAd(adDto,multipartFile);
     }
 
     @DeleteMapping("/{id}")
@@ -50,11 +52,11 @@ public class AdController {
 
     @PatchMapping("/{id}")
     public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createOrUpdateAdDto) {
-        return adService.createAd(createOrUpdateAdDto, id);
+        return adService.updateAd(createOrUpdateAdDto,id);
     }
 
     @PatchMapping(value = "/{adId}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> updateImage(@PathVariable Integer adId, @RequestParam("image") MultipartFile image) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> updateImage(@PathVariable Integer adId, @RequestParam("image") MultipartFile image) {
+        return new  ResponseEntity<>(Arrays.toString(adService.updateImage(adId,image)), HttpStatus.OK);
     }
 }

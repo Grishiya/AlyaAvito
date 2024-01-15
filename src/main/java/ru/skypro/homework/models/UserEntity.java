@@ -10,47 +10,50 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class UserEntity {
+public class UserEntity implements EntityWithImage{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false, length = 55)
     private String email;
-    @Column(nullable = false, length = 16)
     private String password;
-    @Column(nullable = false, length = 32)
     private String firstName;
-    @Column(nullable = false, length = 32)
     private String lastName;
-    @Column(nullable = false, length = 12)
     private String phone;
-    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private RoleDto role;
     private String image;
     @OneToMany(mappedBy = "author")
     private List<Ad> ads;
-
     @OneToMany(mappedBy = "author")
     private List<Comment> comments;
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phone, that.phone) && Objects.equals(image, that.image) && role == that.role && Objects.equals(password, that.password);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(email, firstName, lastName, phone, image, role);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDomain{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", imageUrl='" + image + '\'' +
+                ", userRole=" + role +
+                ", passwordHash='" + password + '\'' +
+                '}';
     }
 }

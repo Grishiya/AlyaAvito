@@ -10,17 +10,19 @@ import ru.skypro.homework.models.Ad;
 public interface AdService {
 
 
-    AdDto createAd(CreateOrUpdateAdDto createOrUpdateAdDto, Integer userId);
+    AdDto updateAd(CreateOrUpdateAdDto createOrUpdateAdDto, Integer userId);
 
+    AdDto createAd(CreateOrUpdateAdDto createOrUpdateAdDto, MultipartFile multipartFile);
     Ad getAdEntity(Integer id);
 
     AdsDto getAllAds();
 
-    AdsDto getMyAds(Integer userId);
+    AdsDto getMyAds();
 
     ExtendedAdDto getExtAdDto(Integer id);
 
     void deleteAd(Integer id);
 
-    byte[] updateImage(MultipartFile file);
+
+    byte[] updateImage(Integer id,MultipartFile file);
 }

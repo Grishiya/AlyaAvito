@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,19 +13,27 @@ import ru.skypro.homework.dto.LoginDto;
 import ru.skypro.homework.dto.RegisterDto;
 import ru.skypro.homework.service.AuthService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 public class AuthController {
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
+    private final ObjectMapper objectMapper;
+    private final HttpServletRequest servletRequest;
+@Autowired
+    public AuthController(AuthService authService, ObjectMapper objectMapper, HttpServletRequest servletRequest) {
         this.authService = authService;
+        this.objectMapper = objectMapper;
+        this.servletRequest = servletRequest;
     }
 
 
+
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto login) {
+    public ResponseEntity<Void> login(@RequestBody LoginDto login) {
         if (authService.login(login.getUsername(), login.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
@@ -33,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDto register) {
+    public ResponseEntity<Void> register(@RequestBody RegisterDto register) {
         if (authService.register(register)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {

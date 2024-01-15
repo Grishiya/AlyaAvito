@@ -1,17 +1,16 @@
 package ru.skypro.homework.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Setter
+@Getter
 public class UserDto {
 
     private Integer id;
-    private String email;
+    private String username;
     private String firstName;
     private String lastName;
     private String phone;
