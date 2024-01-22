@@ -22,14 +22,13 @@ public class AuthController {
     private final AuthService authService;
     private final ObjectMapper objectMapper;
     private final HttpServletRequest servletRequest;
-@Autowired
+
+    @Autowired
     public AuthController(AuthService authService, ObjectMapper objectMapper, HttpServletRequest servletRequest) {
         this.authService = authService;
         this.objectMapper = objectMapper;
         this.servletRequest = servletRequest;
     }
-
-
 
 
     @PostMapping("/login")

@@ -6,7 +6,6 @@ import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework.exception.ActionForbiddenException;
 import ru.skypro.homework.mappers.CommentMapper;
-import ru.skypro.homework.models.Ad;
 import ru.skypro.homework.models.Comment;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.security.PermissionChecker;
@@ -15,11 +14,7 @@ import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.UserService;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,9 +45,10 @@ public class CommentServiceImpl implements CommentService {
         } else {
             commentEntity = new Comment();
             commentEntity.setCreatedAt(Instant.now());
+            commentEntity.setText(comment.getText());
+            commentEntity.setAuthor(userService.getUserEntity());
         }
         commentEntity.setAd(ad);
-        commentEntity.setAuthor(userService.getUserEntity());
         var save = commentRepository.save(commentEntity);
         return CommentMapper.commentToCommentDto(save);
     }

@@ -7,8 +7,6 @@ import ru.skypro.homework.dto.CommentsDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework.service.CommentService;
 
-import java.time.Instant;
-import java.util.List;
 
 @RestController
 @RequestMapping("/ads/{adId}/comments")
